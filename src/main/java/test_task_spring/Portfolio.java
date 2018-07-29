@@ -1,6 +1,5 @@
 package test_task_spring;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Portfolio {
 
@@ -34,7 +33,6 @@ public class Portfolio {
             .stream()
             .map((s) -> s.getSector())
             .distinct()
-            .collect(Collectors.toList())
             .forEach((s) -> {
             portfolioAllocations.allocations.add(CalculateSectorAllocation(s, total));
         });
