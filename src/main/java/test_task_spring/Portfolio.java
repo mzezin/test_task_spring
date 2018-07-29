@@ -13,7 +13,7 @@ public class Portfolio {
                 .sum();
     }
 
-    private SectorAllocation CalculateSectorAllocation(String sector){
+    private SectorAllocation CalculateSectorAllocation(String sector, Double total){
         Double assetValue;
         Double proportion;
         assetValue =  this.stocks
@@ -22,19 +22,21 @@ public class Portfolio {
                 .mapToDouble(s->s.getAssetValue())
                 .sum();
 
-        proportion = assetValue/this.calculateTotal();
+        proportion = assetValue/total;
         return new SectorAllocation(sector,assetValue,proportion);
     }
 
     public Allocations CalculatePortfolio () {
-        Allocations portfolioAllocations = new Allocations(this.calculateTotal());
+        Double total;
+        total = this.calculateTotal();
+        Allocations portfolioAllocations = new Allocations(total);
         this.stocks
             .stream()
             .map((s) -> s.getSector())
             .distinct()
             .collect(Collectors.toList())
             .forEach((s) -> {
-            portfolioAllocations.allocations.add(CalculateSectorAllocation(s));
+            portfolioAllocations.allocations.add(CalculateSectorAllocation(s, total));
         });
 
         return portfolioAllocations;
